@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include=".github\" />
     <Folder Include="src\Application\Interfaces\" />
     <Folder Include="src\Application\DTOs\" />
     <Folder Include="src\Application\Specifications\" />
@@ -33,7 +34,6 @@
     <Folder Include="src\Controllers\" />
     <Folder Include="src\Domain\Interfaces\" />
     <Folder Include="src\Domain\Specifications\" />
-    <Folder Include="src\Infrastructure\Persistence\Context\" />
     <Folder Include="src\Infrastructure\Persistence\Configurations\" />
   </ItemGroup>
 

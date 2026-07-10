@@ -3,7 +3,7 @@ using MarketplaceApi.src.Domain.Entities.Products.ValueObjects;
 
 namespace MarketplaceApi.src.Domain.Entities.Products.Entities
 {
-    public sealed record Image : Entity<ImageId>
+    public sealed record ProductImage : Entity<ImageId>
     {
         public string Url { get; private set; } = string.Empty;
         public string? AltText { get; private set; }
@@ -11,14 +11,14 @@ namespace MarketplaceApi.src.Domain.Entities.Products.Entities
         public required ProductId ProductId { get; init; }
         public Product? Product { get; init; }
 
-        private Image() { }
+        private ProductImage() { }
 
-        public static Image Create(string url, ProductId productId, string? altText = null)
+        public static ProductImage Create(string url, ProductId productId, string? altText = null)
         {
             if (string.IsNullOrWhiteSpace(url))
                 throw new ArgumentException("Image URL is required.", nameof(url));
 
-            return new Image
+            return new ProductImage
             {
                 Id = ImageId.New(),
                 Url = url,

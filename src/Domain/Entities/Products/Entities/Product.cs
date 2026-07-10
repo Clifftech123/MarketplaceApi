@@ -17,11 +17,11 @@ namespace MarketplaceApi.src.Domain.Entities.Products.Entities
         public required StoreId StoreId { get; init; }
         public int StockQuantity { get; private set; }
 
-        private readonly List<Tag> _tags = [];
-        public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
+        private readonly List<ProductTag> _tags = [];
+        public IReadOnlyCollection<ProductTag> Tags => _tags.AsReadOnly();
 
-        private readonly List<Image> _images = [];
-        public IReadOnlyCollection<Image> Images => _images.AsReadOnly();
+        private readonly List<ProductImage> _images = [];
+        public IReadOnlyCollection<ProductImage> Images => _images.AsReadOnly();
 
         public Category? Category { get; init; }
         public Store? Store { get; init; }
@@ -83,7 +83,7 @@ namespace MarketplaceApi.src.Domain.Entities.Products.Entities
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void AddTag(Tag tag)
+        public void AddTag(ProductTag tag)
         {
             if (_tags.Any(t => t.Name.Equals(tag.Name, StringComparison.OrdinalIgnoreCase)))
                 return;
@@ -98,7 +98,7 @@ namespace MarketplaceApi.src.Domain.Entities.Products.Entities
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void AddImage(Image image)
+        public void AddImage(ProductImage image)
         {
             _images.Add(image);
             UpdatedAt = DateTime.UtcNow;

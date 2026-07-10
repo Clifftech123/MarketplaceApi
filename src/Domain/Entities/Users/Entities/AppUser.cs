@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using MarketplaceApi.src.Domain.Enums;
 
 namespace MarketplaceApi.src.Domain.Entities.Users.Entities
 {
@@ -7,7 +6,7 @@ namespace MarketplaceApi.src.Domain.Entities.Users.Entities
     {
         public string FullName { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
-        public UserRole Role { get; set; }
+        public ICollection<AppUserRole> UserRoles { get; } = [];
 
         public bool NotifyOnOrderPlaced { get; set; } = true;
         public bool NotifyOnOrderShipped { get; set; } = true;
