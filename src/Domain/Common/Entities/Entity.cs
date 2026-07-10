@@ -1,0 +1,17 @@
+
+
+namespace MarketplaceApi.src.Domain.Common.Entities
+{
+    public abstract record Entity<TEntityId> : Entity where TEntityId : EntityId
+    {
+        public required TEntityId Id { get; init; }
+    }
+
+    public abstract record Entity
+    {
+        public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+    }
+
+   
+}
