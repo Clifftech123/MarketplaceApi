@@ -1,4 +1,4 @@
-using MarketplaceApi.src.Domain.Entities.Users;
+using MarketplaceApi.src.Domain.Entities.Users.Entities;
 
 namespace MarketplaceApi.src.Infrastructure.Persistence.Audit
 {
