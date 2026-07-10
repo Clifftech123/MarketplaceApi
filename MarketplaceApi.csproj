@@ -34,7 +34,6 @@
     <Folder Include="src\Controllers\" />
     <Folder Include="src\Domain\Interfaces\" />
     <Folder Include="src\Domain\Specifications\" />
-    <Folder Include="src\Infrastructure\Persistence\Configurations\" />
   </ItemGroup>
 
 </Project>

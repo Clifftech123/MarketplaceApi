@@ -46,6 +46,14 @@ namespace MarketplaceApi.src.Infrastructure.Persistence.Context
         public DbSet<TwoFactorToken> TwoFactorTokens { get; set; }
 
         // Audit
+
         public DbSet<AuditTrail> AuditTrails { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        }
     }
 }
