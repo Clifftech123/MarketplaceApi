@@ -1,6 +1,9 @@
+using MarketplaceApi.src.Application.EventHandlers.Payments;
 using MarketplaceApi.src.Application.Options;
 using MarketplaceApi.src.Domain.Contracts;
+using MarketplaceApi.src.Domain.Entities.Payments.Events;
 using MarketplaceApi.src.Domain.Entities.Users.Entities;
+using MarketplaceApi.src.Infrastructure.Events;
 using MarketplaceApi.src.Infrastructure.Interceptor;
 using MarketplaceApi.src.Infrastructure.Persistence.Context;
 using MarketplaceApi.src.Infrastructure.Persistence.Repositories;
@@ -29,6 +32,11 @@ namespace MarketplaceApi.src.Infrastructure.Extensions
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<AuditInterceptor>();
             builder.Services.AddScoped<SoftDeleteInterceptor>();
+            builder.Services.AddScoped<DomainEventDispatchInterceptor>();
+
+            // Dispatches domain events raised by aggregate roots after SaveChanges succeeds
+            builder.Services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+            builder.Services.AddScoped<IDomainEventHandler<PaymentSucceededDomainEvent>, PaymentSucceededLoggingHandler>();
 
             // Register DbContext with SQL Server
             builder.Services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
@@ -45,9 +53,12 @@ namespace MarketplaceApi.src.Infrastructure.Extensions
                 options.EnableDetailedErrors(sqlServerOptions.EnableDetailedErrors);
                 // AuditInterceptor must run before SoftDeleteInterceptor so it records the
                 // true Delete state before soft-delete rewrites it to Modified.
+                // DomainEventDispatchInterceptor hooks SavedChangesAsync (after commit), so
+                // ordering relative to the other two — which hook SavingChangesAsync — doesn't matter.
                 options.AddInterceptors(
                     serviceProvider.GetRequiredService<AuditInterceptor>(),
-                    serviceProvider.GetRequiredService<SoftDeleteInterceptor>());
+                    serviceProvider.GetRequiredService<SoftDeleteInterceptor>(),
+                    serviceProvider.GetRequiredService<DomainEventDispatchInterceptor>());
             });
 
             // Register generic repository — resolves IRepository<TEntity, TEntityId>

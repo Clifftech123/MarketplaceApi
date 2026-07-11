@@ -5,23 +5,14 @@ namespace MarketplaceApi.src.Domain.Common.Aggregates
 {
     public abstract record AggregateRoot<TEntityId> : Entity<TEntityId>, IAggregateRoot where TEntityId : EntityId
     {
+        private readonly List<IDomainEvent> _domainEvents = [];
 
-        public List<IDomainEvent> DomainEvents { get; } = [];
+        public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
+        protected void RaiseDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
 
-        // Add Domain event
-        public void RaseDomainEvent<TDomainEvent>(IDomainEvent domainEvent)
-            where TDomainEvent : IDomainEvent => DomainEvents.Add(domainEvent);
+        protected void RemoveDomainEvent(IDomainEvent domainEvent) => _domainEvents.Remove(domainEvent);
 
-        // Remove Domain event 
-
-        public void RemoveDomainEvent<TDomainEvent>(IDomainEvent domainEvent)
-            where TDomainEvent : IDomainEvent => DomainEvents.Remove(domainEvent);
-
-
-        // Clear Domain events
-        public void ClearDomainEvents() => DomainEvents.Clear();
-
-
+        public void ClearDomainEvents() => _domainEvents.Clear();
     }
 }

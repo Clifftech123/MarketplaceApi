@@ -8,12 +8,12 @@ namespace MarketplaceApi.src.Presentation.Controllers
     public abstract class ApiControllerBase : ControllerBase
     {
         protected IActionResult Success(string? message = null) =>
-            Ok(ApiResponse.Ok(message));
+            Ok(ApiResponse.Ok(message) with { RequestId = HttpContext.TraceIdentifier });
 
         protected IActionResult Success<T>(T data, string? message = null) =>
-            Ok(ApiResponse.Ok(data, message));
+            Ok(ApiResponse.Ok(data, message) with { RequestId = HttpContext.TraceIdentifier });
 
         protected IActionResult Created<T>(string actionName, object routeValues, T data, string? message = null) =>
-            CreatedAtAction(actionName, routeValues, ApiResponse.Ok(data, message));
+            CreatedAtAction(actionName, routeValues, ApiResponse.Ok(data, message) with { RequestId = HttpContext.TraceIdentifier });
     }
 }
