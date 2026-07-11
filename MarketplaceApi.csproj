@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include=".github\" />
+    <Folder Include="src\Infrastructure\Settings\" />
   </ItemGroup>
 
 </Project>

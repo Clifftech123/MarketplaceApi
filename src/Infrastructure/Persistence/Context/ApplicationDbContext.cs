@@ -20,7 +20,7 @@ namespace MarketplaceApi.src.Infrastructure.Persistence.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductTag> ProductTags { get; set; }
-      
+
 
         // Stores
         public DbSet<Store> Stores { get; set; }
