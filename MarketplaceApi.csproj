@@ -7,6 +7,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <UserSecretsId>128f0669-6086-4180-84e2-af86c187267c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +29,7 @@
 
   <ItemGroup>
     <Folder Include=".github\" />
+    <Folder Include="src\Application\Contracts\Services\" />
     <Folder Include="src\Infrastructure\Settings\" />
   </ItemGroup>
 

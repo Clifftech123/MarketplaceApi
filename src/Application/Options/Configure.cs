@@ -1,6 +1,4 @@
 using MarketplaceApi.src.Application.Contracts.Options;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace MarketplaceApi.src.Application.Options
 {
@@ -16,7 +14,7 @@ namespace MarketplaceApi.src.Application.Options
         /// <summary>
         /// Registers <typeparamref name="TOptions"/> with the DI container so it is
         /// resolvable via <c>IOptions&lt;TOptions&gt;</c> and <c>GetApplicationOptions&lt;TOptions&gt;</c>.
-        /// The section name in appsettings must match the class name exactly.
+
         /// </summary>
         public static void ConfigureApplicationOptions<TOptions>(this IServiceCollection services)
             where TOptions : class, IApplicationOption, new()

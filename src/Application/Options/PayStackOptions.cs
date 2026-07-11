@@ -1,9 +1,9 @@
-﻿namespace MarketplaceApi.src.Application.Options
-{
-    public class PayStackOptions
-    {
-        public const string SectionName = "PayStack";
+﻿using MarketplaceApi.src.Application.Contracts.Options;
 
+namespace MarketplaceApi.src.Application.Options
+{
+    public class PayStackOptions : IApplicationOption
+    {
         public string SecretKey { get; set; } = string.Empty;
         public string PublishableKey { get; set; } = string.Empty;
         public string WebhookSecret { get; set; } = string.Empty;

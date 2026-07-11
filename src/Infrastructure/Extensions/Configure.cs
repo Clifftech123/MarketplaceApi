@@ -17,6 +17,12 @@ namespace MarketplaceApi.src.Infrastructure.Extensions
             // Binds "SqlServerOptions" config section → IOptions<SqlServerOptions>
             builder.Services.ConfigureApplicationOptions<SqlServerOptions>();
 
+            // Binds "JwtOptions" config section → IOptions<JwtOptions> (Secret lives in user-secrets, not appsettings.json)
+            builder.Services.ConfigureApplicationOptions<JwtOptions>();
+
+            // Binds "PayStackOptions" config section → IOptions<PayStackOptions> (keys live in user-secrets, not appsettings.json)
+            builder.Services.ConfigureApplicationOptions<PayStackOptions>();
+
             // Needed by AuditInterceptor/SoftDeleteInterceptor to stamp the current user
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<AuditInterceptor>();

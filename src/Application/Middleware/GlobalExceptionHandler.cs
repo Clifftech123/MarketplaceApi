@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MarketplaceApi.src.Application.Abstractions.Common.Messages;
 using MarketplaceApi.src.Application.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,13 @@ namespace MarketplaceApi.src.Application.Middleware
         {
             var (statusCode, title) = exception switch
             {
-                NotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
-                ForbiddenException => (StatusCodes.Status403Forbidden, "Forbidden"),
-                BusinessException => (StatusCodes.Status400BadRequest, "Bad Request"),
-                ConflictException => (StatusCodes.Status409Conflict, "Conflict"),
-                UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
-                ValidationException => (StatusCodes.Status400BadRequest, "Validation Failed"),
-                _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
+                NotFoundException => (StatusCodes.Status404NotFound, ErrorMessages.NotFound),
+                ForbiddenException => (StatusCodes.Status403Forbidden, ErrorMessages.Forbidden),
+                BusinessException => (StatusCodes.Status400BadRequest, ErrorMessages.BadRequest),
+                ConflictException => (StatusCodes.Status409Conflict, ErrorMessages.Conflict),
+                UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, ErrorMessages.Unauthorized),
+                ValidationException => (StatusCodes.Status400BadRequest, ErrorMessages.ValidationFailed),
+                _ => (StatusCodes.Status500InternalServerError, ErrorMessages.internalServerError)
             };
 
             if (statusCode == StatusCodes.Status500InternalServerError)
@@ -33,9 +34,12 @@ namespace MarketplaceApi.src.Application.Middleware
             {
                 Status = statusCode,
                 Title = title,
-                Detail = statusCode == StatusCodes.Status500InternalServerError
-                    ? "An unexpected error occurred. Please try again later."
-                    : exception.Message,
+                Detail = exception switch
+                {
+                    UnauthorizedAccessException => ErrorMessages.Unauthorized,
+                    _ when statusCode == StatusCodes.Status500InternalServerError => ErrorMessages.Unexpected,
+                    _ => exception.Message
+                },
                 Instance = httpContext.Request.Path
             };
 
