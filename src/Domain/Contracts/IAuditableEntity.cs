@@ -1,4 +1,4 @@
-namespace MarketplaceApi.src.Domain.Common.Entities
+namespace MarketplaceApi.src.Domain.Contracts
 {
     public interface IAuditableEntity
     {

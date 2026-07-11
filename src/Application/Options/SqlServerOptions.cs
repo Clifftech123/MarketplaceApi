@@ -1,4 +1,4 @@
-﻿using MarketplaceApi.src.Application.Constracts.Options;
+﻿using MarketplaceApi.src.Application.Contracts.Options;
 using System.ComponentModel.DataAnnotations;
 
 namespace MarketplaceApi.src.Application.Options

@@ -1,4 +1,5 @@
 using MarketplaceApi.src.Domain.Common.Entities;
+using MarketplaceApi.src.Domain.Contracts;
 using MarketplaceApi.src.Domain.Enums;
 
 namespace MarketplaceApi.src.Domain.Entities.Users.Entities

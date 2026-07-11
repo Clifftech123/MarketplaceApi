@@ -1,6 +1,5 @@
 using MarketplaceApi.src.Domain.Common.Entities;
-using MarketplaceApi.src.Domain.Contracts.Aggregates;
-using MarketplaceApi.src.Domain.Contracts.Entities;
+using MarketplaceApi.src.Domain.Contracts;
 
 namespace MarketplaceApi.src.Domain.Common.Aggregates
 {

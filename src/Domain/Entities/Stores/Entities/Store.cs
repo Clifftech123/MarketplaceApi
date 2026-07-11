@@ -1,5 +1,6 @@
 using MarketplaceApi.src.Domain.Common.Aggregates;
 using MarketplaceApi.src.Domain.Common.Entities;
+using MarketplaceApi.src.Domain.Contracts;
 using MarketplaceApi.src.Domain.Entities.Products.Entities;
 using MarketplaceApi.src.Domain.Entities.Stores.ValueObjects;
 using MarketplaceApi.src.Domain.Entities.Users.Entities;

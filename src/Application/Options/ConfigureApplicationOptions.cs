@@ -1,4 +1,4 @@
-using MarketplaceApi.src.Application.Constracts.Options;
+using MarketplaceApi.src.Application.Contracts.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
