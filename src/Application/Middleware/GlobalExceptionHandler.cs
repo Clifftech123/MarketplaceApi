@@ -1,4 +1,5 @@
-﻿using MarketplaceApi.src.Application.Exceptions;
+﻿using FluentValidation;
+using MarketplaceApi.src.Application.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +20,7 @@ namespace MarketplaceApi.src.Application.Middleware
                 BusinessException => (StatusCodes.Status400BadRequest, "Bad Request"),
                 ConflictException => (StatusCodes.Status409Conflict, "Conflict"),
                 UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
+                ValidationException => (StatusCodes.Status400BadRequest, "Validation Failed"),
                 _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
             };
 
@@ -36,6 +38,13 @@ namespace MarketplaceApi.src.Application.Middleware
                     : exception.Message,
                 Instance = httpContext.Request.Path
             };
+
+            if (exception is ValidationException validationException)
+            {
+                problemDetails.Extensions["errors"] = validationException.Errors
+                    .GroupBy(e => e.PropertyName)
+                    .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray());
+            }
 
             httpContext.Response.StatusCode = statusCode;
             await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
