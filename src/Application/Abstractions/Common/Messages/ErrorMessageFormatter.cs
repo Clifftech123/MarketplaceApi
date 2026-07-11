@@ -17,9 +17,6 @@ namespace MarketplaceApi.src.Application.Abstractions.Common.Messages
         public static string Format(string template, params object?[] args) =>
             string.Format(CultureInfo.InvariantCulture, template, args);
 
-        // ─────────────────────────────────────────────────────────────
-        // File / image upload
-        // ─────────────────────────────────────────────────────────────
 
         public static string FileSizeExceedsMax(long maxSizeMb) =>
             Format(ErrorMessages.FileSizeExceedsMaxFormat, maxSizeMb);
