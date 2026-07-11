@@ -23,6 +23,13 @@ namespace MarketplaceApi.src.Application.Abstractions.Common.Messages
         public const string EmailAlreadyRegistered = "An account with this email address already exists.";
         #endregion
 
+        #region Otp
+        public const string OtpRequestRejected = "Unable to process this OTP request.";
+        public const string OtpCooldownActive = "Please wait before requesting another OTP.";
+        public const string OtpInvalidOrExpired = "The OTP code is invalid or has expired.";
+        public const string OtpAttemptsExceeded = "Too many incorrect attempts. Please request a new OTP.";
+        #endregion
+
         #region File / Image Upload
         public const string FileSizeExceedsMaxFormat = "The file size exceeds the maximum allowed size of {0}MB.";
         public const string FileTypeNotAllowedFormat = "The file type is not allowed. Allowed types: {0}.";
