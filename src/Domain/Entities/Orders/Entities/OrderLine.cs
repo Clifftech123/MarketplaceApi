@@ -1,10 +1,11 @@
 using MarketplaceApi.src.Domain.Common.Entities;
+using MarketplaceApi.src.Domain.Contracts;
 using MarketplaceApi.src.Domain.Entities.Orders.ValueObjects;
 using MarketplaceApi.src.Domain.Entities.Products.ValueObjects;
 
 namespace MarketplaceApi.src.Domain.Entities.Orders.Entities
 {
-    public sealed record OrderLine : Entity<OrderLineId>
+    public sealed record OrderLine : Entity<OrderLineId>, IAuditableEntity
     {
         public required ProductId ProductId { get; init; }
         public required string ProductName { get; init; }
@@ -12,6 +13,9 @@ namespace MarketplaceApi.src.Domain.Entities.Orders.Entities
         public int Quantity { get; private set; }
 
         public decimal LineTotal => UnitPrice * Quantity;
+
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         private OrderLine() { }
 

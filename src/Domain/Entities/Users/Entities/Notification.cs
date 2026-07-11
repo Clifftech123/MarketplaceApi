@@ -4,7 +4,7 @@ using MarketplaceApi.src.Domain.Enums;
 
 namespace MarketplaceApi.src.Domain.Entities.Users.Entities
 {
-    public sealed class Notification : ISoftDeletable
+    public sealed class Notification : ISoftDeletable, IAuditableEntity
     {
         public Guid Id { get; private init; } = Guid.NewGuid();
         public Guid UserId { get; private init; }
@@ -18,6 +18,9 @@ namespace MarketplaceApi.src.Domain.Entities.Users.Entities
         public bool IsRead { get; private set; }
         public DateTime? ReadAt { get; private set; }
         public DateTime CreatedAt { get; private init; } = DateTime.UtcNow;
+
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         public bool IsDeleted { get; private set; }
         public DateTime? DeletedOnUtc { get; private set; }

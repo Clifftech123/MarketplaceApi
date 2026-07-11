@@ -1,8 +1,9 @@
+using MarketplaceApi.src.Domain.Contracts;
 using Microsoft.AspNetCore.Identity;
 
 namespace MarketplaceApi.src.Domain.Entities.Users.Entities
 {
-    public class AppUser : IdentityUser<Guid>
+    public class AppUser : IdentityUser<Guid>, IAuditableEntity
     {
         public string FullName { get; set; } = string.Empty;
         public bool IsActive { get; set; } = true;
@@ -15,5 +16,8 @@ namespace MarketplaceApi.src.Domain.Entities.Users.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? LastLoginAt { get; set; }
+
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
     }
 }

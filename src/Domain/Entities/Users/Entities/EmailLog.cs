@@ -5,7 +5,7 @@ using MarketplaceApi.src.Domain.Enums;
 
 namespace MarketplaceApi.src.Domain.Entities.Users.Entities
 {
-    public sealed class EmailLog : ISoftDeletable
+    public sealed class EmailLog : ISoftDeletable, IAuditableEntity
     {
         public Guid Id { get; private init; } = Guid.NewGuid();
         public OrderId? OrderId { get; private init; }
@@ -15,6 +15,9 @@ namespace MarketplaceApi.src.Domain.Entities.Users.Entities
         public bool WasSent { get; private set; }
         public string? ErrorMessage { get; private set; }
         public DateTime SentAt { get; private init; } = DateTime.UtcNow;
+
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         public bool IsDeleted { get; private set; }
         public DateTime? DeletedOnUtc { get; private set; }

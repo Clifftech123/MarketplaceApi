@@ -1,10 +1,11 @@
 using MarketplaceApi.src.Domain.Common.Aggregates;
+using MarketplaceApi.src.Domain.Contracts;
 using MarketplaceApi.src.Domain.Entities.Carts.ValueObjects;
 using MarketplaceApi.src.Domain.Entities.Products.ValueObjects;
 
 namespace MarketplaceApi.src.Domain.Entities.Carts.Entities
 {
-    public sealed record Cart : AggregateRoot<CartId>
+    public sealed record Cart : AggregateRoot<CartId>, IAuditableEntity
     {
         public required Guid CustomerId { get; init; }
 
@@ -12,6 +13,9 @@ namespace MarketplaceApi.src.Domain.Entities.Carts.Entities
         public IReadOnlyCollection<CartItem> Items => _items.AsReadOnly();
 
         public decimal Total => _items.Sum(i => i.UnitPrice * i.Quantity);
+
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         private Cart() { }
 

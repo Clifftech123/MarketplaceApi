@@ -1,5 +1,6 @@
 using MarketplaceApi.src.Application.Options;
 using MarketplaceApi.src.Domain.Contracts;
+using MarketplaceApi.src.Infrastructure.Interceptor;
 using MarketplaceApi.src.Infrastructure.Persistence.Context;
 using MarketplaceApi.src.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,11 @@ namespace MarketplaceApi.src.Infrastructure.Extensions
             // Binds "SqlServerOptions" config section → IOptions<SqlServerOptions>
             builder.Services.ConfigureApplicationOptions<SqlServerOptions>();
 
+            // Needed by AuditInterceptor/SoftDeleteInterceptor to stamp the current user
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<AuditInterceptor>();
+            builder.Services.AddScoped<SoftDeleteInterceptor>();
+
             // Register DbContext with SQL Server
             builder.Services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
             {
@@ -29,6 +35,11 @@ namespace MarketplaceApi.src.Infrastructure.Extensions
                     });
                 options.EnableSensitiveDataLogging(sqlServerOptions.EnableSensitiveDataLogging);
                 options.EnableDetailedErrors(sqlServerOptions.EnableDetailedErrors);
+                // AuditInterceptor must run before SoftDeleteInterceptor so it records the
+                // true Delete state before soft-delete rewrites it to Modified.
+                options.AddInterceptors(
+                    serviceProvider.GetRequiredService<AuditInterceptor>(),
+                    serviceProvider.GetRequiredService<SoftDeleteInterceptor>());
             });
 
             // Register generic repository — resolves IRepository<TEntity, TEntityId>

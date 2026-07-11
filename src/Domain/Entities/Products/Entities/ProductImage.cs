@@ -1,15 +1,19 @@
 using MarketplaceApi.src.Domain.Common.Entities;
+using MarketplaceApi.src.Domain.Contracts;
 using MarketplaceApi.src.Domain.Entities.Products.ValueObjects;
 
 namespace MarketplaceApi.src.Domain.Entities.Products.Entities
 {
-    public sealed record ProductImage : Entity<ImageId>
+    public sealed record ProductImage : Entity<ImageId>, IAuditableEntity
     {
         public string Url { get; private set; } = string.Empty;
         public string? AltText { get; private set; }
 
         public required ProductId ProductId { get; init; }
         public Product? Product { get; init; }
+
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         private ProductImage() { }
 

@@ -1,5 +1,4 @@
 using MarketplaceApi.src.Domain.Common.Aggregates;
-using MarketplaceApi.src.Domain.Common.Entities;
 using MarketplaceApi.src.Domain.Contracts;
 using MarketplaceApi.src.Domain.Entities.Products.Entities;
 using MarketplaceApi.src.Domain.Entities.Stores.ValueObjects;
@@ -7,7 +6,7 @@ using MarketplaceApi.src.Domain.Entities.Users.Entities;
 
 namespace MarketplaceApi.src.Domain.Entities.Stores.Entities
 {
-    public sealed record Store : AggregateRoot<StoreId>, ISoftDeletable
+    public sealed record Store : AggregateRoot<StoreId>, ISoftDeletable, IAuditableEntity
     {
         public string Name { get; private set; } = string.Empty;
         public string Description { get; private set; } = string.Empty;
@@ -16,6 +15,9 @@ namespace MarketplaceApi.src.Domain.Entities.Stores.Entities
 
         private readonly List<Product> _products = [];
         public IReadOnlyCollection<Product> Products => _products.AsReadOnly();
+
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         public bool IsDeleted { get; private set; }
         public DateTime? DeletedOnUtc { get; private set; }

@@ -1,4 +1,5 @@
 using MarketplaceApi.src.Domain.Common.Aggregates;
+using MarketplaceApi.src.Domain.Contracts;
 using MarketplaceApi.src.Domain.Entities.Carts.Entities;
 using MarketplaceApi.src.Domain.Entities.Orders.ValueObjects;
 using MarketplaceApi.src.Domain.Entities.Products.ValueObjects;
@@ -6,7 +7,7 @@ using MarketplaceApi.src.Domain.Enums;
 
 namespace MarketplaceApi.src.Domain.Entities.Orders.Entities
 {
-    public sealed record Order : AggregateRoot<OrderId>
+    public sealed record Order : AggregateRoot<OrderId>, IAuditableEntity
     {
         public required Guid CustomerId { get; init; }
         public OrderStatus Status { get; private set; } = OrderStatus.Pending;
@@ -16,6 +17,9 @@ namespace MarketplaceApi.src.Domain.Entities.Orders.Entities
         public IReadOnlyCollection<OrderLine> Lines => _lines.AsReadOnly();
 
         public decimal Total => _lines.Sum(l => l.LineTotal);
+
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         private Order() { }
 

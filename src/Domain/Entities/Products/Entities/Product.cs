@@ -9,7 +9,7 @@ using MarketplaceApi.src.Domain.Entities.Stores.ValueObjects;
 
 namespace MarketplaceApi.src.Domain.Entities.Products.Entities
 {
-    public sealed record Product : AggregateRoot<ProductId>, ISoftDeletable
+    public sealed record Product : AggregateRoot<ProductId>, ISoftDeletable, IAuditableEntity
     {
         public string Name { get; private set; } = string.Empty;
         public decimal Price { get; private set; }
@@ -26,6 +26,9 @@ namespace MarketplaceApi.src.Domain.Entities.Products.Entities
 
         public Category? Category { get; init; }
         public Store? Store { get; init; }
+
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         public bool IsDeleted { get; private set; }
         public DateTime? DeletedOnUtc { get; private set; }

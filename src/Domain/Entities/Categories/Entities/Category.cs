@@ -6,13 +6,16 @@ using MarketplaceApi.src.Domain.Entities.Products.Entities;
 
 namespace MarketplaceApi.src.Domain.Entities.Categories.Entities
 {
-    public sealed record Category : AggregateRoot<CategoryId>, ISoftDeletable
+    public sealed record Category : AggregateRoot<CategoryId>, ISoftDeletable, IAuditableEntity
     {
         public string Name { get; private set; } = string.Empty;
         public string Description { get; private set; } = string.Empty;
 
         private readonly List<Product> _products = [];
         public IReadOnlyCollection<Product> Products => _products.AsReadOnly();
+
+        public string? CreatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
 
         public bool IsDeleted { get; private set; }
         public DateTime? DeletedOnUtc { get; private set; }
