@@ -98,15 +98,9 @@ namespace MarketplaceApi.src.Application.Services.Auth
             return true;
         }
 
-        public async Task<UserLoginResponse> LoginWithOtpAsync(LoginWithOtpRequest request)
+        public Task<UserLoginResponse> LoginWithOtpAsync(LoginWithOtpRequest request)
         {
-            var userId = await VerifyOtpCoreAsync(request.UserIdentifier, request.Code, OtpPurpose.Login);
-
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user is null || !user.IsActive)
-                throw new NotFoundException(ErrorMessages.NotFound);
-
-            return new UserLoginResponse(user.Id, user.Email!, user.FullName ?? user.Email!);
+            throw new NotImplementedException();
         }
 
         public async Task<LoginStepOneResponse> ValidateCredentialsAndSendOtpAsync(LoginStepOneRequest request)

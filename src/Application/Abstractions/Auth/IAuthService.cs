@@ -6,7 +6,7 @@ namespace MarketplaceApi.src.Application.Abstractions.Auth
     {
         Task<AuthResult> RegisterAsync(CreateUserRequest request, CancellationToken cancellationToken = default);
 
-        Task<AuthResult> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default);
+        Task<LoginStepOneResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default);
 
         Task<AuthResult> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken = default);
 

@@ -31,5 +31,11 @@ namespace MarketplaceApi.src.Application.Mappings.Users
             UserName = request.Email,
             FullName = request.FullName
         };
+
+
+
+        // Auth respnser 
+
+
     }
 }
