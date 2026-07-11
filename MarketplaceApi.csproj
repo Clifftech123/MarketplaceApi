@@ -10,37 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="src\Application\DTOs\**" />
-    <Compile Remove="src\Application\Interfaces\**" />
-    <Compile Remove="src\Application\Services\**" />
-    <Compile Remove="src\Application\Specifications\**" />
-    <Compile Remove="src\Controllers\**" />
-    <Compile Remove="src\Domain\Interfaces\**" />
-    <Compile Remove="src\Infrastructure\Persistence\Utilities\**" />
-    <Content Remove="src\Application\DTOs\**" />
-    <Content Remove="src\Application\Interfaces\**" />
-    <Content Remove="src\Application\Services\**" />
-    <Content Remove="src\Application\Specifications\**" />
-    <Content Remove="src\Controllers\**" />
-    <Content Remove="src\Domain\Interfaces\**" />
-    <Content Remove="src\Infrastructure\Persistence\Utilities\**" />
-    <EmbeddedResource Remove="src\Application\DTOs\**" />
-    <EmbeddedResource Remove="src\Application\Interfaces\**" />
-    <EmbeddedResource Remove="src\Application\Services\**" />
-    <EmbeddedResource Remove="src\Application\Specifications\**" />
-    <EmbeddedResource Remove="src\Controllers\**" />
-    <EmbeddedResource Remove="src\Domain\Interfaces\**" />
-    <EmbeddedResource Remove="src\Infrastructure\Persistence\Utilities\**" />
-    <None Remove="src\Application\DTOs\**" />
-    <None Remove="src\Application\Interfaces\**" />
-    <None Remove="src\Application\Services\**" />
-    <None Remove="src\Application\Specifications\**" />
-    <None Remove="src\Controllers\**" />
-    <None Remove="src\Domain\Interfaces\**" />
-    <None Remove="src\Infrastructure\Persistence\Utilities\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
