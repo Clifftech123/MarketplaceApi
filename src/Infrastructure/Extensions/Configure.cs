@@ -1,8 +1,10 @@
 using MarketplaceApi.src.Application.Options;
 using MarketplaceApi.src.Domain.Contracts;
+using MarketplaceApi.src.Domain.Entities.Users.Entities;
 using MarketplaceApi.src.Infrastructure.Interceptor;
 using MarketplaceApi.src.Infrastructure.Persistence.Context;
 using MarketplaceApi.src.Infrastructure.Persistence.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceApi.src.Infrastructure.Extensions
@@ -52,6 +54,19 @@ namespace MarketplaceApi.src.Infrastructure.Extensions
             builder.Services.AddScoped(
                 typeof(IRepository<,>),
                 typeof(Repository<,>));
+
+
+            builder.Services.AddIdentityCore<AppUser>(options =>
+                {
+                    options.Password.RequiredLength = 8;
+                    options.User.RequireUniqueEmail = true;
+                })
+                .AddRoles<AppRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            // Backs OtpService's cooldown/attempt-tracking cache
+            builder.Services.AddMemoryCache();
         }
     }
 }
