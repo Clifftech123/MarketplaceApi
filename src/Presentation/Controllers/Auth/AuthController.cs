@@ -3,7 +3,7 @@ using MarketplaceApi.src.Application.Abstractions.Common.Messages;
 using MarketplaceApi.src.Application.DTOs.Users;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MarketplaceApi.src.Presentation.Controllers
+namespace MarketplaceApi.src.Presentation.Controllers.Auth
 {
     public class AuthController(IAuthService authService, IOtpService otpService) : ApiControllerBase
     {
