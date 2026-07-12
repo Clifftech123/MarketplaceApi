@@ -89,5 +89,8 @@ namespace MarketplaceApi.src.Application.Services.Auth
                 jwt.SigningKey is null)
                 throw new SecurityTokenException("Invalid token algorithm.");
         }
+
+
+
     }
 }

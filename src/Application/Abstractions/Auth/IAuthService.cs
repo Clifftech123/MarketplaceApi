@@ -10,6 +10,12 @@ namespace MarketplaceApi.src.Application.Abstractions.Auth
 
         Task<AuthResult> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken = default);
 
-        Task RevokeTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken = default);
+        Task<UserResponse> GetCurrentUserAsync(string userId);
+
+
+
+        Task ChangeUserPasswordAsync(Guid userId, ChangePasswordRequest request, CancellationToken ct = default);
+
+        Task DeleteAccountAsync(Guid userId, CancellationToken ct = default);
     }
 }

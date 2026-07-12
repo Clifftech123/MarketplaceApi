@@ -17,12 +17,46 @@ namespace MarketplaceApi.src.Application.Services.Auth
         private readonly IOtpService _otpService;
         private readonly IRefreshTokenService _refreshTokenService;
 
-        public AuthService(IJwtTokenService jwtTokenService, UserManager<AppUser> userManager, IOtpService otpService, IRefreshTokenService refreshTokenService)
+        private readonly ICurrentUserService _currentUserService;
+
+        public AuthService(IJwtTokenService jwtTokenService, UserManager<AppUser> userManager, IOtpService otpService, IRefreshTokenService refreshTokenService, ICurrentUserService currentUserService)
         {
             _jwtTokenService = jwtTokenService;
             _userManager = userManager;
             _otpService = otpService;
             _refreshTokenService = refreshTokenService;
+            _currentUserService = currentUserService;
+        }
+
+        public async Task ChangeUserPasswordAsync(Guid userId, ChangePasswordRequest request, CancellationToken ct = default)
+        {
+            var user = await GtUserByIdOrThrowAsync();
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+            if (!result.Succeeded)
+                throw new BusinessException(result.Errors.FirstOrDefault()?.Description ?? ErrorMessages.PasswordChangeFailed);
+
+            // Remove all existing refresh tokens for the user to ensure they must log in again with the new password
+            await _refreshTokenService.RevokeAllForUserAsync(user.Id, ct);
+
+        }
+
+
+        public async Task DeleteAccountAsync(Guid userId, CancellationToken ct = default)
+        {
+            var user = await GtUserByIdOrThrowAsync();
+
+            user.IsActive = false;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+                throw new BusinessException(string.Join(" ", result.Errors.Select(e => e.Description)));
+        }
+
+        public async Task<UserResponse> GetCurrentUserAsync(string userId)
+        {
+            var user = await GtUserByIdOrThrowAsync();
+            return user.ToResponse();
+
         }
 
         public Task<LoginStepOneResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
@@ -83,6 +117,8 @@ namespace MarketplaceApi.src.Application.Services.Auth
             return new AuthResult(accessToken, refreshToken, expiresAt);
         }
 
+
+
         public async Task RevokeTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken = default)
         {
             var existingToken = await _refreshTokenService.GetActiveTokenAsync(request.RefreshToken, cancellationToken)
@@ -90,5 +126,27 @@ namespace MarketplaceApi.src.Application.Services.Auth
 
             await _refreshTokenService.RevokeAllForUserAsync(existingToken.UserId, cancellationToken);
         }
+
+
+        #region Private Methods
+
+        private async Task<AppUser> GtUserByIdOrThrowAsync()
+        {
+            var userId = await _currentUserService.GetCurrentUserIdAsync()
+                 ?? throw new UnauthorizedAccessException(ErrorMessages.UserNotAuthenticated);
+            var user = await _userManager.FindByIdAsync(userId.ToString())
+                ?? throw new NotFoundException(ErrorMessages.UserNotFound);
+            if (!user.IsActive)
+                throw new ForbiddenException(ErrorMessages.AccountDeactivated);
+            return user;
+
+        }
+
+        #endregion
+
+
     }
 }
+
+
+

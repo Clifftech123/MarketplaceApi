@@ -21,6 +21,9 @@ namespace MarketplaceApi.src.Application.Abstractions.Common.Messages
         public const string AccountDeactivated = "This account has been deactivated.";
         public const string RefreshTokenInvalid = "The refresh token is invalid, expired, or has already been revoked.";
         public const string EmailAlreadyRegistered = "An account with this email address already exists.";
+        public const string UserNotAuthenticated = "User is not authenticated.";
+        public const string UserNotFound = "User not found.";
+        public const string PasswordChangeFailed = "Failed to change the password. Please ensure the current password is correct.";
         #endregion
 
         #region Otp
@@ -35,6 +38,8 @@ namespace MarketplaceApi.src.Application.Abstractions.Common.Messages
         public const string FileTypeNotAllowedFormat = "The file type is not allowed. Allowed types: {0}.";
         public const string FileExtensionNotAllowedFormat = "The file extension is not allowed. Allowed extensions: {0}.";
         public const string ImageUploadFailedFormat = "Image upload failed: {0}.";
+
+
         #endregion
     }
 }
