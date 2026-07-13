@@ -10,8 +10,8 @@ namespace MarketplaceApi.src.Domain.Specifications
     /// a read-model / DTO of type <typeparamref name="TResult"/>.
     /// </summary>
     public abstract class ProjectionSpecification<TEntity, TResult>
-        where TEntity  : IAggregateRoot
-        where TResult  : ISelector
+        where TEntity : IAggregateRoot
+        where TResult : ISelector
     {
         public Expression<Func<TEntity, bool>>? Criteria { get; private set; }
 

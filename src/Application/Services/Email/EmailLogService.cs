@@ -20,7 +20,7 @@ namespace MarketplaceApi.src.Application.Services.Email
 
         public async Task DeleteEmailLogAsync(Guid id, CancellationToken cancellationToken)
         {
-            var emailLog = await repo.GetByIdAsync(new EmailLogId(id), cancellationToken)
+            var emailLog = await repo.GetByIdAsync(GetEmailLogId(id), cancellationToken)
                 ?? throw new KeyNotFoundException($"Email log with ID {id} not found.");
 
             emailLog.Delete();
@@ -29,7 +29,7 @@ namespace MarketplaceApi.src.Application.Services.Email
 
         public async Task<EmailLogResponse> GetEmailLogByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var emailLog = await repo.GetByIdAsync(new EmailLogId(id), cancellationToken)
+            var emailLog = await repo.GetByIdAsync(GetEmailLogId(id), cancellationToken)
                 ?? throw new KeyNotFoundException($"Email log with ID {id} not found.");
             return emailLog.ToResponse();
 
@@ -61,7 +61,7 @@ namespace MarketplaceApi.src.Application.Services.Email
 
         public async Task<EmailLogResponse> UpdateEmailLogAsync(Guid id, UpdateEmailLogRequest emailLogRequest, CancellationToken cancellationToken)
         {
-            var emailLog = await repo.GetByIdAsync(new EmailLogId(id), cancellationToken)
+            var emailLog = await repo.GetByIdAsync(GetEmailLogId(id), cancellationToken)
                 ?? throw new KeyNotFoundException($"Email log with ID {id} not found.");
 
             if (emailLogRequest.WasSent)
@@ -72,5 +72,15 @@ namespace MarketplaceApi.src.Application.Services.Email
             var updated = await repo.UpdateAsync(emailLog, cancellationToken);
             return updated.ToResponse();
         }
+
+
+
+        #region Private Methods
+
+        // EmailLog Id 
+
+        private static EmailLogId GetEmailLogId(Guid id) => new EmailLogId(id);
+
+        #endregion 
     }
 }
