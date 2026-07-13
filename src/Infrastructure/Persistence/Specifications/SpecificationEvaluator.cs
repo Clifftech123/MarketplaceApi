@@ -1,5 +1,6 @@
 using MarketplaceApi.src.Domain.Contracts;
 using MarketplaceApi.src.Domain.Specifications;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceApi.src.Infrastructure.Persistence.Specifications
 {
@@ -8,8 +9,11 @@ namespace MarketplaceApi.src.Infrastructure.Persistence.Specifications
         public static IQueryable<TEntity> Apply<TEntity>(
             this IQueryable<TEntity> query,
             Specification<TEntity> specification)
-            where TEntity : IAggregateRoot
+            where TEntity : class, IAggregateRoot
         {
+            if (specification.IgnoresQueryFilters)
+                query = query.IgnoreQueryFilters();
+
             if (specification.Criteria is { } criteria)
                 query = query.Where(criteria);
 

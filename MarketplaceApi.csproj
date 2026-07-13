@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <Folder Include=".github\" />
+    <Folder Include="src\Application\DTOs\Common\" />
   </ItemGroup>
 
 </Project>

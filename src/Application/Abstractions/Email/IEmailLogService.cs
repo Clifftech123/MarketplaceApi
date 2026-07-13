@@ -29,5 +29,10 @@ namespace MarketplaceApi.src.Application.Abstractions.Email
         /// Restores a previously soft-deleted email log.
         /// </summary>
         Task RestoreEmailLogAsync(Guid id, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets all soft-deleted email logs.
+        /// </summary>
+        Task<IReadOnlyList<EmailLogResponse>> GetAllDeletedAsync(CancellationToken cancellationToken);
     }
 }

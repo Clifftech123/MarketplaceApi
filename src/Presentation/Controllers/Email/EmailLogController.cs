@@ -89,5 +89,16 @@ namespace MarketplaceApi.src.Presentation.Controllers.Email
             await emailLogService.RestoreEmailLogAsync(id, cancellationToken);
             return Success(SuccessMessages.EmailLogRestored);
         }
+
+        /// <summary>
+        /// Gets all soft-deleted email logs.
+        /// </summary>
+        [HttpGet("deleted")]
+        [ProducesResponseType(typeof(ApiResponse<IReadOnlyList<EmailLogResponse>>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllDeleted(CancellationToken cancellationToken)
+        {
+            var result = await emailLogService.GetAllDeletedAsync(cancellationToken);
+            return Success(result);
+        }
     }
 }

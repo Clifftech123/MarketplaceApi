@@ -21,6 +21,8 @@ namespace MarketplaceApi.src.Domain.Specifications
 
         public Pagination? Pagination { get; private set; }
 
+        public bool IgnoresQueryFilters { get; private set; }
+
         protected Specification(Expression<Func<TEntity, bool>>? criteria = null)
             => Criteria = criteria;
 
@@ -35,5 +37,12 @@ namespace MarketplaceApi.src.Domain.Specifications
 
         protected void AddPagination(Pagination? pagination)
             => Pagination = pagination;
+
+        /// <summary>
+        /// Opts this specification out of any global EF Core query filters (e.g. soft-delete filters),
+        /// so entities normally excluded (like deleted rows) can be retrieved.
+        /// </summary>
+        protected void ApplyIgnoreQueryFilters()
+            => IgnoresQueryFilters = true;
     }
 }

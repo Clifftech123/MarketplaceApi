@@ -74,6 +74,12 @@ namespace MarketplaceApi.src.Application.Services.Email
         }
 
 
+        public async Task<IReadOnlyList<EmailLogResponse>> GetAllDeletedAsync(CancellationToken cancellationToken)
+        {
+            var deletedEmailLogs = await repo.GetManyAsync(new DeletedEmailLogsSpecification(), cancellationToken);
+            return deletedEmailLogs.Select(log => log.ToResponse()).ToList();
+        }
+
 
         #region Private Methods
 
@@ -81,6 +87,10 @@ namespace MarketplaceApi.src.Application.Services.Email
 
         private static EmailLogId GetEmailLogId(Guid id) => new EmailLogId(id);
 
-        #endregion 
+        
+
+
+
+        #endregion
     }
 }
