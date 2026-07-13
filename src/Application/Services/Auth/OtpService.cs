@@ -22,19 +22,25 @@ namespace MarketplaceApi.src.Application.Services.Auth
         private readonly IMemoryCache _cache;
         private readonly IEmailService _emailService;
         private readonly ILogger<OtpService> _logger;
+        private readonly IJwtTokenService _jwtTokenService;
+        private readonly IRefreshTokenService _refreshTokenService;
 
         public OtpService(
             UserManager<AppUser> userManager,
             ApplicationDbContext db,
             IMemoryCache cache,
             IEmailService emailService,
-            ILogger<OtpService> logger)
+            ILogger<OtpService> logger,
+            IJwtTokenService jwtTokenService,
+            IRefreshTokenService refreshTokenService)
         {
             _userManager = userManager;
             _db = db;
             _cache = cache;
             _emailService = emailService;
             _logger = logger;
+            _jwtTokenService = jwtTokenService;
+            _refreshTokenService = refreshTokenService;
         }
 
 
@@ -98,9 +104,21 @@ namespace MarketplaceApi.src.Application.Services.Auth
             return true;
         }
 
-        public Task<UserLoginResponse> LoginWithOtpAsync(LoginWithOtpRequest request)
+        public async Task<UserLoginResponse> LoginWithOtpAsync(LoginWithOtpRequest request)
         {
-            throw new NotImplementedException();
+            var userId = await VerifyOtpCoreAsync(request.UserIdentifier, request.Code, OtpPurpose.Login);
+
+            var user = await _userManager.FindByIdAsync(userId.ToString())
+                ?? throw new BusinessException(ErrorMessages.OtpInvalidOrExpired);
+
+            if (!user.IsActive)
+                throw new ForbiddenException(ErrorMessages.AccountDeactivated);
+
+            var (accessToken, expiresAt) = _jwtTokenService.GenerateAccessToken(user);
+            var refreshToken = _jwtTokenService.GenerateRefreshToken();
+            await _refreshTokenService.CreateAsync(user.Id, refreshToken);
+
+            return new UserLoginResponse(accessToken, refreshToken, expiresAt);
         }
 
         public async Task<LoginStepOneResponse> ValidateCredentialsAndSendOtpAsync(LoginStepOneRequest request)
