@@ -28,20 +28,18 @@ namespace MarketplaceApi.src.Application.Services.Auth
             _currentUserService = currentUserService;
         }
 
-        public async Task ChangeUserPasswordAsync(Guid userId, ChangePasswordRequest request, CancellationToken ct = default)
+        public async Task ChangeUserPasswordAsync(ChangePasswordRequest request, CancellationToken ct = default)
         {
             var user = await GtUserByIdOrThrowAsync();
             var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
             if (!result.Succeeded)
                 throw new BusinessException(result.Errors.FirstOrDefault()?.Description ?? ErrorMessages.PasswordChangeFailed);
-
-            // Remove all existing refresh tokens for the user to ensure they must log in again with the new password
             await _refreshTokenService.RevokeAllForUserAsync(user.Id, ct);
 
         }
 
 
-        public async Task DeleteAccountAsync(Guid userId, CancellationToken ct = default)
+        public async Task DeleteAccountAsync(CancellationToken ct = default)
         {
             var user = await GtUserByIdOrThrowAsync();
 
@@ -52,7 +50,7 @@ namespace MarketplaceApi.src.Application.Services.Auth
                 throw new BusinessException(string.Join(" ", result.Errors.Select(e => e.Description)));
         }
 
-        public async Task<UserResponse> GetCurrentUserAsync(string userId)
+        public async Task<UserResponse> GetCurrentUserAsync()
         {
             var user = await GtUserByIdOrThrowAsync();
             return user.ToResponse();
@@ -64,6 +62,21 @@ namespace MarketplaceApi.src.Application.Services.Auth
 
             return _otpService.ValidateCredentialsAndSendOtpAsync(
                 new LoginStepOneRequest(request.Email, request.Password));
+        }
+
+        public Task<UserLoginResponse> VerifyLoginOtpAsync(LoginWithOtpRequest request, CancellationToken cancellationToken = default)
+        {
+            return _otpService.LoginWithOtpAsync(request);
+        }
+
+        public async Task ConfirmEmailAsync(VerifyOtpRequest request, CancellationToken cancellationToken = default)
+        {
+            await _otpService.VerifyOtpAsync(request);
+        }
+
+        public Task<OtpResponse> ResendOtpAsync(SendOtpRequest request, CancellationToken cancellationToken = default)
+        {
+            return _otpService.SendOtpAsync(request);
         }
 
         public async Task<AuthResult> RefreshTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken = default)
@@ -116,7 +129,6 @@ namespace MarketplaceApi.src.Application.Services.Auth
 
             return new AuthResult(accessToken, refreshToken, expiresAt);
         }
-
 
 
         public async Task RevokeTokenAsync(RefreshTokenRequest request, CancellationToken cancellationToken = default)
