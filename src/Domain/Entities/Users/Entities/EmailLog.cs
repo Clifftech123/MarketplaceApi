@@ -1,13 +1,13 @@
-using MarketplaceApi.src.Domain.Common.Entities;
+using MarketplaceApi.src.Domain.Common.Aggregates;
 using MarketplaceApi.src.Domain.Contracts;
 using MarketplaceApi.src.Domain.Entities.Orders.ValueObjects;
+using MarketplaceApi.src.Domain.Entities.Users.ValueObjects;
 using MarketplaceApi.src.Domain.Enums;
 
 namespace MarketplaceApi.src.Domain.Entities.Users.Entities
 {
-    public sealed class EmailLog : ISoftDeletable, IAuditableEntity
+    public sealed record EmailLog : AggregateRoot<EmailLogId>, ISoftDeletable, IAuditableEntity
     {
-        public Guid Id { get; private init; } = Guid.NewGuid();
         public OrderId? OrderId { get; private init; }
         public EmailType Type { get; private init; }
         public string ToAddress { get; private init; } = string.Empty;
@@ -32,6 +32,7 @@ namespace MarketplaceApi.src.Domain.Entities.Users.Entities
 
             return new EmailLog
             {
+                Id = EmailLogId.New(),
                 ToAddress = toAddress,
                 Subject = subject,
                 Type = type,

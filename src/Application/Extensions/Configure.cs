@@ -1,8 +1,10 @@
 using FluentValidation;
 using MarketplaceApi.src.Application.Abstractions.Auth;
+using MarketplaceApi.src.Application.Abstractions.Email;
 using MarketplaceApi.src.Application.Filters;
 using MarketplaceApi.src.Application.Middleware;
 using MarketplaceApi.src.Application.Services.Auth;
+using MarketplaceApi.src.Application.Services.Email;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketplaceApi.src.Application.Extensions
@@ -28,6 +30,8 @@ namespace MarketplaceApi.src.Application.Extensions
 
             // Placeholder until a real email provider is wired up — logs the OTP instead of sending it
             builder.Services.AddScoped<IEmailService, LoggingEmailService>();
+
+            builder.Services.AddScoped<IEmailLogService, EmailLogService>();
         }
     }
 }

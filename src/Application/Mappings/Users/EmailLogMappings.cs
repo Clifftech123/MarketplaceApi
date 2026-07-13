@@ -8,7 +8,7 @@ namespace MarketplaceApi.src.Application.Mappings.Users
     {
         public static EmailLogResponse ToResponse(this EmailLog log) => new()
         {
-            Id = log.Id,
+            Id = log.Id.Value,
             OrderId = log.OrderId?.Value,
             Type = log.Type,
             ToAddress = log.ToAddress,

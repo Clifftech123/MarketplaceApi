@@ -11,5 +11,12 @@ namespace MarketplaceApi.src.Application.Abstractions.Common.Messages
         public const string UserDeleted = "User deleted successfully.";
         public const string EmailConfirmed = "Email confirmed successfully.";
         #endregion
+
+        #region EmailLog
+        public const string EmailLogCreated = "Email log created successfully.";
+        public const string EmailLogUpdated = "Email log updated successfully.";
+        public const string EmailLogDeleted = "Email log deleted successfully.";
+        public const string EmailLogRestored = "Email log restored successfully.";
+        #endregion
     }
 }

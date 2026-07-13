@@ -1,5 +1,6 @@
 using MarketplaceApi.src.Domain.Entities.Orders.ValueObjects;
 using MarketplaceApi.src.Domain.Entities.Users.Entities;
+using MarketplaceApi.src.Domain.Entities.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,6 +13,8 @@ namespace MarketplaceApi.src.Infrastructure.Persistence.Configurations.Users
             builder.ToTable("EmailLogs");
 
             builder.HasKey(e => e.Id);
+            builder.Property(e => e.Id)
+                .HasConversion(id => id.Value, value => new EmailLogId(value));
 
             builder.Property(e => e.OrderId)
                 .HasConversion(
