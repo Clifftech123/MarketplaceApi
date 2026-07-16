@@ -55,6 +55,10 @@ namespace MarketplaceApi.src.Domain.Contracts
         IQueryable<TEntity> Query();
 
 
+        Task<bool> Iscompleted<TSpec>(TSpec spec, CancellationToken cancellationToken = default)
+            where TSpec : Specification<TEntity>;
+
+
     }
 
 

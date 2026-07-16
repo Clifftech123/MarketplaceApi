@@ -135,6 +135,11 @@ namespace MarketplaceApi.src.Infrastructure.Persistence.Repositories
             return this;
         }
 
+
+
+
+
+
         private async Task SaveChangesAsync(CancellationToken cancellationToken)
             => await _context.SaveChangesAsync(cancellationToken);
 
@@ -156,6 +161,13 @@ namespace MarketplaceApi.src.Infrastructure.Persistence.Repositories
         {
             var query = DbSet.AsNoTracking().Apply(spec);
             return await PagedResult<TEntity>.CreateAsync(query, page, pageSize, cancellationToken);
+        }
+
+        public async Task<bool> Iscompleted<TSpec>(TSpec spec, CancellationToken cancellationToken = default) where TSpec : Specification<TEntity>
+        {
+            var query = DbSet.AsNoTracking().Apply(spec);
+            return await query.AnyAsync(cancellationToken);
+
         }
     }
 }

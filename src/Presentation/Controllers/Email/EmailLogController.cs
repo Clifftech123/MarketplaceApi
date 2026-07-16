@@ -97,7 +97,7 @@ namespace MarketplaceApi.src.Presentation.Controllers.Email
         [ProducesResponseType(typeof(ApiResponse<IReadOnlyList<EmailLogResponse>>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllDeleted(CancellationToken cancellationToken)
         {
-            var result = await emailLogService.GetAllDeletedAsync(cancellationToken);
+            var result = await emailLogService.GetAllDeletedAsync();
             return Success(result);
         }
     }
