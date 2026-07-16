@@ -1,3 +1,4 @@
+using MarketplaceApi.src.Application.Abstractions.Common.Utilities;
 using MarketplaceApi.src.Domain.Common.Aggregates;
 using MarketplaceApi.src.Domain.Common.Entities;
 using MarketplaceApi.src.Domain.Specifications;
@@ -47,5 +48,15 @@ namespace MarketplaceApi.src.Domain.Contracts
             where TResult : ISelector;
 
         IRepository<TEntity, TEntityId> AsTracking();
+
+        Task<PagedResult<TResult>> GetPagedAsync<TSpec, TResult>(TSpec spec, int page, int pageSize, CancellationToken cancellationToken = default)
+            where TSpec : ProjectionSpecification<TEntity, TResult>
+            where TResult : ISelector;
+
+        IQueryable<TEntity> Query();
+
+
     }
+
+
 }

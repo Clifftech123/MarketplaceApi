@@ -11,6 +11,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MarketplaceApi.src.Infrastructure.Extensions
+
+
+
+
+// CQRS pattern: Application layer handles commands/queries, but the Infrastructure layer
+// handles domain events. This is because domain events are part of the domain model, and their handling often involves infrastructure concerns (e.g., logging, sending notifications, etc.). By placing the event handlers in the Infrastructure layer, we can keep the Application layer focused on orchestrating commands and queries without being tightly coupled to specific infrastructure implementations.
+
 {
     public static class Configure
     {

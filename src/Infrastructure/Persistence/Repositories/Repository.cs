@@ -1,3 +1,4 @@
+using MarketplaceApi.src.Application.Abstractions.Common.Utilities;
 using MarketplaceApi.src.Domain.Common.Aggregates;
 using MarketplaceApi.src.Domain.Common.Entities;
 using MarketplaceApi.src.Domain.Contracts;
@@ -10,7 +11,8 @@ using System.Linq.Expressions;
 namespace MarketplaceApi.src.Infrastructure.Persistence.Repositories
 {
     internal class Repository<TEntity, TEntityId> : IRepository<TEntity, TEntityId>
-        where TEntity   : AggregateRoot<TEntityId>
+
+        where TEntity : AggregateRoot<TEntityId>
         where TEntityId : EntityId
     {
         private readonly ApplicationDbContext _context;
@@ -112,7 +114,7 @@ namespace MarketplaceApi.src.Infrastructure.Persistence.Repositories
         public async Task<TResult?> GetOneAsync<TSpec, TResult>(
             TSpec specification,
             CancellationToken cancellationToken = default)
-            where TSpec   : ProjectionSpecification<TEntity, TResult>
+            where TSpec : ProjectionSpecification<TEntity, TResult>
             where TResult : ISelector
             => await DbSet.AsNoTracking()
                 .Apply(specification)
@@ -121,7 +123,7 @@ namespace MarketplaceApi.src.Infrastructure.Persistence.Repositories
         public async Task<List<TResult>> GetManyAsync<TSpec, TResult>(
             TSpec specification,
             CancellationToken cancellationToken = default)
-            where TSpec   : ProjectionSpecification<TEntity, TResult>
+            where TSpec : ProjectionSpecification<TEntity, TResult>
             where TResult : ISelector
             => await DbSet.AsNoTracking()
                 .Apply(specification)
@@ -140,6 +142,21 @@ namespace MarketplaceApi.src.Infrastructure.Persistence.Repositories
         {
             _context.ChangeTracker.Clear();
             _tracking = false;
+        }
+
+        public async Task<PagedResult<TResult>> GetPagedAsync<TSpec, TResult>(TSpec spec, int page, int pageSize, CancellationToken cancellationToken = default)
+            where TSpec : ProjectionSpecification<TEntity, TResult>
+            where TResult : ISelector
+        {
+            var query = DbSet.AsNoTracking().Apply(spec);
+            return await PagedResult<TResult>.CreateAsync(query, page, pageSize, cancellationToken);
+        }
+
+        public IQueryable<TEntity> Query()
+        {
+            var query = _tracking ? DbSet.AsTracking() : DbSet.AsNoTracking();
+            _tracking = false;
+            return query;
         }
     }
 }

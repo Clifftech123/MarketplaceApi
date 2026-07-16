@@ -87,7 +87,7 @@ namespace MarketplaceApi.src.Application.Services.Email
 
         private static EmailLogId GetEmailLogId(Guid id) => new EmailLogId(id);
 
-        
+
 
 
 
