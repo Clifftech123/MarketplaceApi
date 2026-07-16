@@ -1,5 +1,6 @@
 using MarketplaceApi.src.Application.Abstractions.Common;
 using MarketplaceApi.src.Application.Abstractions.Common.Messages;
+using MarketplaceApi.src.Application.Abstractions.Common.Utilities;
 using MarketplaceApi.src.Application.Abstractions.Email;
 using MarketplaceApi.src.Application.DTOs.Users;
 using Microsoft.AspNetCore.Mvc;
@@ -93,11 +94,17 @@ namespace MarketplaceApi.src.Presentation.Controllers.Email
         /// <summary>
         /// Gets all soft-deleted email logs.
         /// </summary>
+        /// <summary>
+        /// Gets all soft-deleted email logs.
+        /// </summary>
         [HttpGet("deleted")]
-        [ProducesResponseType(typeof(ApiResponse<IReadOnlyList<EmailLogResponse>>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllDeleted(CancellationToken cancellationToken)
+        [ProducesResponseType(typeof(ApiResponse<PagedResult<EmailLogResponse>>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllDeleted(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 50,
+            CancellationToken cancellationToken = default)
         {
-            var result = await emailLogService.GetAllDeletedAsync();
+            var result = await emailLogService.GetAllDeletedAsync(page, pageSize, cancellationToken);
             return Success(result);
         }
     }
