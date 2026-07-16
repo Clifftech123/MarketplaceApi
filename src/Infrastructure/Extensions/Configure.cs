@@ -35,6 +35,10 @@ namespace MarketplaceApi.src.Infrastructure.Extensions
             // Binds "PayStackOptions" config section → IOptions<PayStackOptions> (keys live in user-secrets, not appsettings.json)
             builder.Services.ConfigureApplicationOptions<PayStackOptions>();
 
+            // Email service configuration (SMTP) — binds "SmtpOptions" config section → IOptions<SmtpOptions>
+
+            builder.Services.ConfigureApplicationOptions<EmailOptions>();
+
             // Needed by AuditInterceptor/SoftDeleteInterceptor to stamp the current user
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<AuditInterceptor>();
