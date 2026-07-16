@@ -1,4 +1,5 @@
-﻿using MarketplaceApi.src.Application.Abstractions.Email;
+﻿using MarketplaceApi.src.Application.Abstractions.Common.Utilities;
+using MarketplaceApi.src.Application.Abstractions.Email;
 using MarketplaceApi.src.Application.DTOs.Users;
 using MarketplaceApi.src.Application.Mappings.Users;
 using MarketplaceApi.src.Application.Specifications.Users;
@@ -74,12 +75,11 @@ namespace MarketplaceApi.src.Application.Services.Email
         }
 
 
-        public async Task<IReadOnlyList<EmailLogResponse>> GetAllDeletedAsync(CancellationToken cancellationToken)
+        public async Task<PagedResult<EmailLogResponse>> GetAllDeletedAsync(int page, int pageSize, CancellationToken cancellationToken)
         {
-            var deletedEmailLogs = await repo.GetManyAsync(new DeletedEmailLogsSpecification(), cancellationToken);
-            return deletedEmailLogs.Select(log => log.ToResponse()).ToList();
+            var paged = await repo.GetPagedAsync(new DeletedEmailLogsSpecification(), page, pageSize, cancellationToken);
+            return paged.MapTo(log => log.ToResponse());
         }
-
 
         #region Private Methods
 

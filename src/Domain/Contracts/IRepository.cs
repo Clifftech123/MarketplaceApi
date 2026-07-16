@@ -49,9 +49,8 @@ namespace MarketplaceApi.src.Domain.Contracts
 
         IRepository<TEntity, TEntityId> AsTracking();
 
-        Task<PagedResult<TResult>> GetPagedAsync<TSpec, TResult>(TSpec spec, int page, int pageSize, CancellationToken cancellationToken = default)
-            where TSpec : ProjectionSpecification<TEntity, TResult>
-            where TResult : ISelector;
+        Task<PagedResult<TEntity>> GetPagedAsync<TSpec>(TSpec spec, int page, int pageSize, CancellationToken cancellationToken = default)
+     where TSpec : Specification<TEntity>;
 
         IQueryable<TEntity> Query();
 

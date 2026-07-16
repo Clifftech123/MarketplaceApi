@@ -144,19 +144,18 @@ namespace MarketplaceApi.src.Infrastructure.Persistence.Repositories
             _tracking = false;
         }
 
-        public async Task<PagedResult<TResult>> GetPagedAsync<TSpec, TResult>(TSpec spec, int page, int pageSize, CancellationToken cancellationToken = default)
-            where TSpec : ProjectionSpecification<TEntity, TResult>
-            where TResult : ISelector
-        {
-            var query = DbSet.AsNoTracking().Apply(spec);
-            return await PagedResult<TResult>.CreateAsync(query, page, pageSize, cancellationToken);
-        }
 
         public IQueryable<TEntity> Query()
         {
             var query = _tracking ? DbSet.AsTracking() : DbSet.AsNoTracking();
             _tracking = false;
             return query;
+        }
+
+        public async Task<PagedResult<TEntity>> GetPagedAsync<TSpec>(TSpec spec, int page, int pageSize, CancellationToken cancellationToken = default) where TSpec : Specification<TEntity>
+        {
+            var query = DbSet.AsNoTracking().Apply(spec);
+            return await PagedResult<TEntity>.CreateAsync(query, page, pageSize, cancellationToken);
         }
     }
 }

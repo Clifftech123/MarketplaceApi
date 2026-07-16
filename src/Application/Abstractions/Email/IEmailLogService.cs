@@ -1,4 +1,5 @@
-﻿using MarketplaceApi.src.Application.DTOs.Users;
+﻿using MarketplaceApi.src.Application.Abstractions.Common.Utilities;
+using MarketplaceApi.src.Application.DTOs.Users;
 
 namespace MarketplaceApi.src.Application.Abstractions.Email
 {
@@ -33,6 +34,7 @@ namespace MarketplaceApi.src.Application.Abstractions.Email
         /// <summary>
         /// Gets all soft-deleted email logs.
         /// </summary>
-        Task<IReadOnlyList<EmailLogResponse>> GetAllDeletedAsync(CancellationToken cancellationToken);
+        Task<PagedResult<EmailLogResponse>> GetAllDeletedAsync(int page, int pageSize, CancellationToken cancellationToken);
+
     }
 }
