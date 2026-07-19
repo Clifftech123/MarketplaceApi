@@ -90,7 +90,6 @@ namespace MarketplaceApi.src.Application.Services.Auth
                 throw new SecurityTokenException("Invalid token algorithm.");
         }
 
-
-
     }
 }
+

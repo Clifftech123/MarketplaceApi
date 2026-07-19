@@ -1,4 +1,5 @@
 using MarketplaceApi.src.Application.Extensions;
+using MarketplaceApi.src.Application.Hubs;
 using MarketplaceApi.src.Domain.Constants;
 using MarketplaceApi.src.Domain.Entities.Users.Entities;
 using MarketplaceApi.src.Infrastructure.Extensions;
@@ -6,13 +7,25 @@ using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
+
+
+
 builder.AddInfrastructure();
 builder.AddApplication();
+
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
+
+
+
+
+
 var app = builder.Build();
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -36,6 +49,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<NotificationHub>("/hubs/notifications");
 
 app.Run();
 
